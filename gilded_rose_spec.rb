@@ -104,4 +104,27 @@ describe "update_quality" do
       end
     end
   end
+
+  context "Conjured" do
+    let(:conjured) { Item.new "Conjured", 2, 10 }
+
+    it "degrades in quality twice as fast as regular items" do
+      expect { tick conjured }.to change { conjured.quality }.by(-2)
+    end
+
+    it "sell_in decrease by 1" do
+      expect { tick conjured }.to change { conjured.sell_in }.by(-1)
+    end
+
+    it "quality never goes into negative" do
+      conjured.quality = 1
+      tick conjured
+      expect(conjured.quality).to eq 0
+    end
+
+    it "after the sell date has passed, quality degrages twice as fast" do
+      conjured.sell_in = -1
+      expect { tick conjured }.to change { conjured.quality }.by(-4)
+    end
+  end
 end

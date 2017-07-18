@@ -5,6 +5,18 @@ def update_quality(items)
 end
 
 def tick(item)
+  if item.name == "Conjured"
+    item.sell_in -= 1
+    if item.sell_in >= 0
+      item.quality -= 2
+    else
+      item.quality -= 4
+    end
+
+    item.quality = 0 if item.quality < 0
+    return
+  end
+
   if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
     if item.quality > 0
       if item.name != 'Sulfuras, Hand of Ragnaros'
