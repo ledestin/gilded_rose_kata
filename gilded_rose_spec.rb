@@ -66,4 +66,42 @@ describe "update_quality" do
       expect { tick sulfuras }.not_to change { sulfuras.sell_in }
     end
   end
+
+  context "Backstage passes" do
+    let(:backstage_passes) do
+      Item.new "Backstage passes to a TAFKAL80ETC concert", 11, 2
+    end
+
+    context "increases in quality as sell_in date approaches" do
+      it "by 1 when sell_in is > 10" do
+        expect { tick backstage_passes }.to \
+          change { backstage_passes.quality }.by(1)
+      end
+
+      it "by 2 when there are 10 or less days left" do
+        backstage_passes.sell_in = 10
+        5.times do
+          expect { tick backstage_passes }.to \
+            change { backstage_passes.quality }.by(2)
+        end
+      end
+
+      it "by 3 when there are 5 or less days left" do
+        backstage_passes.sell_in = 5
+        5.times do
+          expect { tick backstage_passes }.to \
+            change { backstage_passes.quality }.by(3)
+        end
+      end
+    end
+
+    it "quality drops to zero after the concert" do
+      backstage_passes.sell_in = 0
+
+      5.times do
+        tick backstage_passes
+        expect(backstage_passes.quality).to eq 0
+      end
+    end
+  end
 end
