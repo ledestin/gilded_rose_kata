@@ -54,4 +54,16 @@ describe "update_quality" do
       expect { tick aged_brie }.to change { aged_brie.sell_in }.by(-1)
     end
   end
+
+  context "Sulfuras" do
+    let(:sulfuras) { Item.new "Sulfuras, Hand of Ragnaros", 1, 10 }
+
+    it "never decreases in quality" do
+      expect { tick sulfuras }.not_to change { sulfuras.quality }
+    end
+
+    it "never has to be sold" do
+      expect { tick sulfuras }.not_to change { sulfuras.sell_in }
+    end
+  end
 end
