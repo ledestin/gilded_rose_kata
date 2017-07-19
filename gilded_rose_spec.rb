@@ -122,6 +122,11 @@ describe "update_quality" do
       expect(conjured.quality).to eq 0
     end
 
+    it "on the sell date, quality degrates normally" do
+      conjured.sell_in = 0
+      expect { tick conjured }.to change { conjured.quality }.by(-2)
+    end
+
     it "after the sell date has passed, quality degrages twice as fast" do
       conjured.sell_in = -1
       expect { tick conjured }.to change { conjured.quality }.by(-4)
