@@ -5,18 +5,7 @@ def update_quality(items)
 end
 
 def tick(item)
-  if item.name == "Conjured Mana Cake"
-    if item.sell_in > 0
-      item.quality -= 2
-    else
-      item.quality -= 4
-    end
-    item.quality = 0 if item.quality < 0
-
-    item.sell_in -= 1
-
-    return
-  end
+  tick_conjured(item) and return
 
   if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
     if item.quality > 0
@@ -60,6 +49,19 @@ def tick(item)
         item.quality += 1
       end
     end
+  end
+end
+
+def tick_conjured(item)
+  if item.name == "Conjured Mana Cake"
+    if item.sell_in > 0
+      item.quality -= 2
+    else
+      item.quality -= 4
+    end
+    item.quality = 0 if item.quality < 0
+
+    item.sell_in -= 1
   end
 end
 
